@@ -15,7 +15,9 @@
                                 (path-seq path (inc index))))))
 
 (defn trace-path [path]
-  (map read-pos (take-while #(< (last %) (count lines)) (path-seq path))))
+  (map read-pos
+       (take-while #(< (last %) (count lines))
+                   (path-seq path))))
 
 (println "Part 1:"
          (count-trees (trace-path [3 1])))
