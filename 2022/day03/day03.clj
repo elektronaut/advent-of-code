@@ -1,18 +1,26 @@
-(require '[clojure.string :as str])
-
-(defn shared-item [bag]
-  (let [[a b] (map set bag)]
-    (first (clojure.set/intersection a b))))
+(require '[clojure.string :as str]
+         '[clojure.set :as set])
 
 (def bags
   (->> (str/split-lines (slurp "input.txt"))
-       (map #(str/split % #""))
-       (map #(split-at (/ (count %) 2) %))))
+       (map #(str/split % #""))))
+
+(defn compartments [bag]
+  (split-at (/ (count bag) 2) bag))
+
+(defn shared-item [collections]
+  (->> (map set collections)
+       (reduce set/intersection)
+       (first)))
 
 (defn priority [i]
   (let [offset (if (= i (str/upper-case i)) 38 96)]
     (- (int (first i)) offset)))
 
-(println "Part 1:" (->> (map shared-item bags)
-                        (map priority)g
-                        (reduce +)))
+(defn solve [collections]
+  (->> (map shared-item collections)
+       (map priority)
+       (reduce +)))
+
+(println "Part 1:" (solve (map compartments bags)))
+(println "Part 1:" (solve (partition 3 bags)))
