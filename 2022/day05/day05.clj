@@ -27,14 +27,18 @@
        (map (fn [stack] (filter #(not= \space %) stack)))
        (vec)))
 
-(defn step [stacks [amount from to]]
+(defn step [pickup-fn stacks [amount from to]]
   (let* [source (nth stacks (dec from))
          crates (take amount source)
          remaining (drop amount source)
-         new-stack (concat (reverse crates) (nth stacks (dec to)))]
+         new-stack (concat (pickup-fn crates) (nth stacks (dec to)))]
     (assoc (assoc stacks (dec from) remaining)
            (dec to) new-stack)))
 
-(println "Part 1:" (->> (reduce step initial-state moves)
-                        (map first)
-                        (str/join)))
+(defn solve [pickup-fn]
+  (->> (reduce (partial step pickup-fn) initial-state moves)
+       (map first)
+       (str/join)))
+
+(println "Part 1:" (solve reverse))
+(println "Part 2:" (solve identity))
