@@ -2,10 +2,13 @@
 
 (def input (slurp "input.txt"))
 
-(defn is-marker [pos]
-  (let [str (subs input (- pos 4) pos)]
+(defn is-marker [length pos]
+  (let [str (subs input (- pos length) pos)]
     (= (count str) (count (set str)))))
 
-(println "Part 1:" (->> (range 4 (inc (count input)))
-                        (filter is-marker)
-                        (first)))
+(defn markers [length]
+  (->> (range length (inc (count input)))
+       (filter (partial is-marker length))))
+
+(println "Part 1:" (first (markers 4)))
+(println "Part 1:" (first (markers 14)))
