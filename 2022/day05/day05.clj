@@ -2,11 +2,9 @@
 
 (def input (slurp "input.txt"))
 
-(defn int [s]
-  (Integer/parseInt s))
-
 (defn parse-move [move-str]
-  (map int (str/split (str/replace move-str #"move " "") #"[^\d]+")))
+  (->> (str/split (str/replace move-str #"move " "") #"[^\d]+")
+       (map #(Integer/parseInt %))))
 
 (defn parse-stack-row [row-str]
   (let [len (/ (inc (count row-str)) 4)]
@@ -28,12 +26,12 @@
        (vec)))
 
 (defn step [pickup-fn stacks [amount from to]]
-  (let* [source (nth stacks (dec from))
-         crates (take amount source)
-         remaining (drop amount source)
-         new-stack (concat (pickup-fn crates) (nth stacks (dec to)))]
-    (assoc (assoc stacks (dec from) remaining)
-           (dec to) new-stack)))
+  (let* [crates (pickup-fn (take amount (stacks (dec from))))
+         from-stack (drop amount (stacks (dec from)))
+         to-stack (concat crates (stacks (dec to)))]
+    (-> stacks
+        (assoc (dec from) from-stack)
+        (assoc (dec to) to-stack))))
 
 (defn solve [pickup-fn]
   (->> (reduce (partial step pickup-fn) initial-state moves)
