@@ -33,3 +33,17 @@
        (map parse-command)
        (reduce step [["/"] {}])
        (last)))
+
+(defn directories [node]
+  (let [subdirs (filter map? (vals node))]
+    (conj (mapcat directories subdirs) node)))
+
+(defn directory-size [node]
+  (let [subdirs (filter map? (vals node))
+        size (reduce + (remove map? (vals node)))]
+    (+ size (reduce + (map directory-size subdirs)))))
+
+(println "Part 1:" (->> (directories (get-in tree ["/"]))
+                        (filter #(<= (directory-size %) 100000))
+                        (map directory-size)
+                        (reduce +)))
