@@ -43,7 +43,17 @@
         size (reduce + (remove map? (vals node)))]
     (+ size (reduce + (map directory-size subdirs)))))
 
-(println "Part 1:" (->> (directories (get-in tree ["/"]))
-                        (filter #(<= (directory-size %) 100000))
-                        (map directory-size)
-                        (reduce +)))
+(def sizes
+  (->> (directories (get-in tree ["/"]))
+       (map directory-size)
+       (sort)))
+
+(println "Part 1:"
+         (->> (filter #(<= % 100000) sizes)
+              (reduce +)))
+
+(print "Part 2:"
+       (let* [root-size (last sizes)
+              free-space (- 70000000 root-size)
+              required-size (- 30000000 free-space)]
+         (first (filter #(>= % required-size) sizes))))
