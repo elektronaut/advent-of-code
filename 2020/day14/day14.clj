@@ -1,4 +1,5 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.14
+  (:require [clojure.string :as str]))
 
 (defn parse-command [str]
   (let [[cmd value] (str/split str #" = ")]
@@ -54,6 +55,6 @@
             {:mem (merge mem (reduce (fn [m a] (assoc m a value)) {}
                                      (addresses addr mask)))}))))
 
-(let [program (read-program "input.txt")]
+(let [program (read-program "2020/day14/input.txt")]
   (println "Part 1:" (run eval-part1 program))
   (println "Part 2:" (run eval-part2 program)))

@@ -1,4 +1,5 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.19
+  (:require [clojure.string :as str]))
 
 (defn parse-rule [s]
   (let [[key values] (str/split s #": ")
@@ -22,7 +23,7 @@
     (and (empty? result)
          (string? result))))
 
-(let [blocks (map str/split-lines (str/split (slurp "input.txt") #"\n\n"))
+(let [blocks (map str/split-lines (str/split (slurp "2020/day19/input.txt") #"\n\n"))
       rules (into {} (map parse-rule (first blocks)))
       messages (last blocks)
       new-rules {8 '([42] [42 8]) 11 '([42 31] [42 11 31])}]

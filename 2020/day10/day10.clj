@@ -1,7 +1,8 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.10
+  (:require [clojure.string :as str]))
 
 (def adapters
-  (->> (slurp "input.txt")
+  (->> (slurp "2020/day10/input.txt")
        (str/split-lines)
        (map #(Integer/parseInt %))
        (sort)))

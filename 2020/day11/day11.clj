@@ -1,10 +1,11 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.11
+  (:require [clojure.string :as str]))
 
 (def directions
   [[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]])
 
 (def initial-state
-  (->> (str/split-lines (slurp "input.txt"))
+  (->> (str/split-lines (slurp "2020/day11/input.txt"))
        (map vec)))
 
 (defn lookup [state [x y]]

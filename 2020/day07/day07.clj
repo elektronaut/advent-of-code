@@ -1,7 +1,8 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.07
+  (:require [clojure.string :as str]))
 
 (def lines (map #(str/replace % #".$" "")
-            (str/split-lines (slurp "input.txt"))))
+            (str/split-lines (slurp "2020/day07/input.txt"))))
 
 (defn color [s]
   (last (re-find #"([\w\s]+) bags?" s)))

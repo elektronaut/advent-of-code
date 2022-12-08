@@ -1,5 +1,6 @@
-(require '[clojure.string :as str]
-         '[clojure.set :as set])
+(ns advent-of-code.2020.17
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 (defn surrounding-space [[head & tail]]
   (let [heads (map #(+ head %) '(-1 0 1))]
@@ -39,6 +40,6 @@
 (defn boot-count [cs]
   (count (nth (steps cs) (inc 6))))
 
-(let [initial-state (parse-input (slurp "input.txt"))]
+(let [initial-state (parse-input (slurp "2020/day17/input.txt"))]
   (println "Part 1:" (boot-count (stretch-dimensions initial-state 3)))
   (println "Part 2:" (boot-count (stretch-dimensions initial-state 4))))

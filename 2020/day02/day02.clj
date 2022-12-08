@@ -1,6 +1,7 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.02
+  (:require [clojure.string :as str]))
 
-(def inputs (str/split-lines (slurp "input.txt")))
+(def inputs (str/split-lines (slurp "2020/day02/input.txt")))
 
 (defn valid-pass? [s]
   (let [[min-str max-str letter pass] (str/split s #"[^\w\d]+")

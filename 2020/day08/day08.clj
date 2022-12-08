@@ -1,9 +1,10 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.08
+  (:require [clojure.string :as str]))
 
 (def initial-state {:pc 0 :accumulator 0 :log []})
 
 (def program
-  (->> (str/split-lines (slurp "input.txt"))
+  (->> (str/split-lines (slurp "2020/day08/input.txt"))
        (map #(let [[o a] (str/split % #"\s")] [o (Integer/parseInt a)]))
        (vec)))
 

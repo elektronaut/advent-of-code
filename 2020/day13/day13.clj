@@ -1,6 +1,7 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.13
+  (:require [clojure.string :as str]))
 
-(def lines (str/split-lines (slurp "input.txt")))
+(def lines (str/split-lines (slurp "2020/day13/input.txt")))
 
 (def timestamp (Integer/parseInt (first lines)))
 

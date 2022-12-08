@@ -1,7 +1,9 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.09
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 (def numbers
-  (vec (->> (slurp "input.txt")
+  (vec (->> (slurp "2020/day09/input.txt")
             (str/split-lines)
             (map #(Long/parseLong %)))))
 

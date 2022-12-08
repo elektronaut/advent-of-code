@@ -1,8 +1,9 @@
-(require '[clojure.string :as str]
-         '[clojure.set :as set])
+(ns advent-of-code.2020.05
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 (def passes
-  (str/split-lines (slurp "input.txt")))
+  (str/split-lines (slurp "2020/day05/input.txt")))
 
 ;; The input is just a binary number where F/L = 0 and B/R = 1,
 ;; there's no need to split the string and calculate column/row.

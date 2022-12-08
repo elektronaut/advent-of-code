@@ -1,4 +1,5 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.18
+  (:require [clojure.string :as str]))
 
 (defn prefix [pre items]
   (cons pre (map #(if (list? %) (prefix pre %) %) items)))
@@ -13,7 +14,7 @@
        (map #(apply + %))
        (reduce *)))
 
-(let [sexps (->> (str/split-lines (slurp "input.txt"))
+(let [sexps (->> (str/split-lines (slurp "2020/day18/input.txt"))
                  (map #(read-string (str "(" % ")"))))]
   (println "Part 1:" (reduce + (map #(eval (prefix 'calc-no-precedence %)) sexps)))
   (println "Part 2:" (reduce + (map #(eval (prefix 'calc-precedence %)) sexps))))

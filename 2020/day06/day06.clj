@@ -1,7 +1,8 @@
-(require '[clojure.string :as str]
-         '[clojure.set :as set])
+(ns advent-of-code.2020.06
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
-(def groups (str/split (slurp "input.txt") #"\n\n"))
+(def groups (str/split (slurp "2020/day06/input.txt") #"\n\n"))
 
 (defn questions-any [g]
   (set (str/replace g #"[^\w]" "")))

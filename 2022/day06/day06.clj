@@ -1,6 +1,7 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2022.06
+  (:require [clojure.string :as str]))
 
-(def input (slurp "input.txt"))
+(def input (slurp "2022/day06/input.txt"))
 
 (defn is-marker [length pos]
   (let [str (subs input (- pos length) pos)]

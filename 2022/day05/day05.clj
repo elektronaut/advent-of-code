@@ -1,6 +1,7 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2022.05
+  (:require [clojure.string :as str]))
 
-(def input (slurp "input.txt"))
+(def input (slurp "2022/day05/input.txt"))
 
 (defn parse-move [move-str]
   (->> (str/split (str/replace move-str #"move " "") #"[^\d]+")

@@ -1,5 +1,6 @@
-(require '[clojure.string :as str]
-         '[clojure.set :as set])
+(ns advent-of-code.2020.16
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 (defn parse-long [s]
   (Long/parseLong s))
@@ -16,7 +17,7 @@
        (map #(map parse-long %))))
 
 (def data
-  (let [input (str/split (slurp "input.txt") #"\n\n")]
+  (let [input (str/split (slurp "2020/day16/input.txt") #"\n\n")]
     {:rules (map parse-rule (str/split-lines (input 0)))
      :ticket (first (parse-tickets (input 1)))
      :tickets (parse-tickets (input 2))}))

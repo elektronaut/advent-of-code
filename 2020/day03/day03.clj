@@ -1,6 +1,7 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.03
+  (:require [clojure.string :as str]))
 
-(def lines (str/split-lines (slurp "input.txt")))
+(def lines (str/split-lines (slurp "2020/day03/input.txt")))
 
 (defn count-trees [v]
   (count (filter #(= \# %) v)))

@@ -1,6 +1,7 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2022.02
+  (:require [clojure.string :as str]))
 
-(def plays (->> (slurp "input.txt")
+(def plays (->> (slurp "2022/day02/input.txt")
                 (str/split-lines)
                 (map #(str/split % #" "))))
 

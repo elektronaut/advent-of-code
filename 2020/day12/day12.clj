@@ -1,7 +1,8 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.12
+  (:require [clojure.string :as str]))
 
 (def instructions
-  (->> (str/split-lines (slurp "input.txt"))
+  (->> (str/split-lines (slurp "2020/day12/input.txt"))
        (map #(vec [(keyword (re-find #"^[^\d]+" %))
                    (Integer/parseInt (re-find #"[\d]+$" %))]))))
 

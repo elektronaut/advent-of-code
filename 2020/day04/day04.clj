@@ -1,8 +1,9 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2020.04
+  (:require [clojure.string :as str]))
 
 (def passports
   (map #(apply hash-map (str/split % #"[^\w\d#]+"))
-       (str/split (slurp "input.txt") #"\n\n")))
+       (str/split (slurp "2020/day04/input.txt") #"\n\n")))
 
 (def required-fields
   ["byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"])

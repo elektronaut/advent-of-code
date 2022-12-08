@@ -1,4 +1,5 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2022.07
+  (:require [clojure.string :as str]))
 
 (defn parse-command [string]
   (let* [lines (str/split-lines string)
@@ -22,13 +23,12 @@
   (reduce merge (map ls-line output)))
 
 (defn step [[cwd tree] command]
-  (println cwd)
   (case (command :name)
     "cd" [(cd cwd (command :arg)) tree]
     "ls" [cwd (assoc-in tree cwd (ls (command :output)))]))
 
 (def tree
-  (->> (str/split (slurp "input.txt") #"\n?\$ ")
+  (->> (str/split (slurp "2022/day07/input.txt") #"\n?\$ ")
        (drop 1)
        (map parse-command)
        (reduce step [["/"] {}])
@@ -52,8 +52,8 @@
          (->> (filter #(<= % 100000) sizes)
               (reduce +)))
 
-(print "Part 2:"
-       (let* [root-size (last sizes)
-              free-space (- 70000000 root-size)
-              required-size (- 30000000 free-space)]
-         (first (filter #(>= % required-size) sizes))))
+(println "Part 2:"
+         (let* [root-size (last sizes)
+                free-space (- 70000000 root-size)
+                required-size (- 30000000 free-space)]
+           (first (filter #(>= % required-size) sizes))))

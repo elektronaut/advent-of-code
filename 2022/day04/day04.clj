@@ -1,4 +1,5 @@
-(require '[clojure.string :as str])
+(ns advent-of-code.2022.04
+  (:require [clojure.string :as str]))
 
 (defn int [s]
   (Integer/parseInt s))
@@ -8,7 +9,7 @@
        (map #(map int (str/split % #"-")))))
 
 (def pairs
-  (->> (slurp "input.txt")
+  (->> (slurp "2022/day04/input.txt")
        (str/split-lines)
        (map parse-pair)))
 

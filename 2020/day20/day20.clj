@@ -1,8 +1,9 @@
-(require '[clojure.string :as str]
-         '[clojure.set :as set])
+(ns advent-of-code.2020.20
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 (def tiles
-  (->> (str/split (slurp "input.txt") #"\n\n")
+  (->> (str/split (slurp "2020/day20/input.txt") #"\n\n")
        (map str/split-lines)
        (map (fn [[head & tail]]
               {(Integer/parseInt (re-find #"[\d]+" head))
