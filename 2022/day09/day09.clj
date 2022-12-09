@@ -35,13 +35,20 @@
 (def directions
   {"U" [0 -1] "D" [0 1] "L" [-1 0] "R" [1 0]})
 
-(defn move [history dir]
-  (let [[head tail] (first history)
-        next-head (vec+ head (directions dir))
-        next-tail (move-tail next-head tail)]
-    (conj history [next-head next-tail])))
+(defn move-knot [rope knot]
+  (conj rope (move-tail (last rope) knot)))
 
-(println "Part 1:" (->> (reduce move '([[0 0][0 0]]) moves)
-                        (map last)
-                        (set)
-                        (count)))
+(defn move [history dir]
+  (let [[head & rest] (first history)
+        next-head (vec+ head (directions dir))
+        rope (seq (reduce move-knot [next-head] rest))]
+    (conj history rope)))
+
+(defn solve [length]
+  (->> (reduce move (seq [(repeat length [0 0])]) moves)
+       (map last)
+       (set)
+       (count)))
+
+(println "Part 1:" (solve 2))
+(println "Part 2:" (solve 10))
