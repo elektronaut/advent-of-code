@@ -24,6 +24,18 @@
 (defn signal-strength [cycle]
   (* cycle (nth cycles (dec cycle))))
 
+(defn pixel [i x]
+  (if (and (>= i (dec x))
+           (<= i (inc x)))
+    "#"
+    "."))
+
 (println "Part 1:" (->> [20 60 100 140 180 220]
                         (map signal-strength)
                         (reduce +)))
+
+(do (println "Part 2:")
+    (->> (partition 40 cycles)
+         (map #(map-indexed pixel %))
+         (map str/join)
+         (map println)))
