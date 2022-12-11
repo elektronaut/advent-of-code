@@ -23,8 +23,8 @@
        (map parse-monkey)
        (vec)))
 
-(defn process-item [monkey monkeys item]
-  (let [worry-level (quot ((monkey :operation) item) 3)
+(defn process-item [worry-fn monkey monkeys item]
+  (let [worry-level (worry-fn ((monkey :operation) item))
         target (if (= 0 (mod worry-level (monkey :test)))
                  (monkey :if-true)
                  (monkey :if-false))
@@ -32,22 +32,28 @@
         target-items (conj (target-monkey :items) worry-level)]
     (assoc monkeys target (assoc target-monkey :items target-items))))
 
-(defn process-monkey [monkeys index]
+(defn process-monkey [worry-fn monkeys index]
   (let [monkey (nth monkeys index)
         items (monkey :items)
-        next-monkeys (reduce (partial process-item monkey) monkeys items)]
+        next-monkeys (reduce (partial process-item worry-fn monkey) monkeys items)]
     (assoc next-monkeys index
            (-> monkey
                (assoc :items [])
                (assoc :inspect-count (+ (count items) (monkey :inspect-count)))))))
 
-(defn round [monkeys]
-  (reduce process-monkey monkeys (range 0 (count monkeys))))
+(defn round [worry-fn monkeys]
+  (reduce (partial process-monkey worry-fn) monkeys (range 0 (count monkeys))))
+
+(defn solve [worry-fn rounds]
+  (->> (nth (iterate (partial round worry-fn) monkeys) rounds)
+       (sort-by :inspect-count)
+       (reverse)
+       (take 2)
+       (map :inspect-count)
+       (reduce *)))
+
+(println "Part 1:" (solve #(quot % 3) 20))
 
 (println "Part 1:"
-         (->> (nth (iterate round monkeys) 20)
-              (sort-by :inspect-count)
-              (reverse)
-              (take 2)
-              (map :inspect-count)
-              (reduce *)))
+         (let [cycle-length (reduce * (map :test monkeys))]
+           (solve #(mod % cycle-length) 10000)))
