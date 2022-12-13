@@ -1,4 +1,4 @@
-(ns advent-of-code.2022.10
+(ns advent-of-code.2022.11
   (:require [clojure.string :as str]))
 
 (defn make-operation [input]
