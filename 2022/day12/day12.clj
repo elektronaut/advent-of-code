@@ -30,7 +30,7 @@
    [y (dec x)] [y (inc x)]])
 
 (defn reachable [grid a b]
-  (<= (->> [b a]
+  (<= (->> [a b]
        (map (partial get-in grid))
        (map elevation)
        (reduce -)) 1))
@@ -70,20 +70,19 @@
              next-node (apply min-key next-costs unvisited)]
          (recur next-costs next-node (disj unvisited next-node)))))))
 
-
-(def heightmap
-  (->> (slurp "2022/day12/input.txt")
+(defn read-input [filename]
+  (->> (slurp filename)
        (str/split-lines)
        (map #(str/split % #""))
        (vec)))
 
-(def graph
-  (->> (coordinates heightmap)
-       (reduce #(assoc %1 %2 (connected heightmap %2)) {})))
-
-(defn min-distance [graph from to]
-  ((dijkstra graph from to) to))
-
-(let [start (first (find-pos heightmap "S"))
-      end (first (find-pos heightmap "E"))]
-  (println "Part 1:" (min-distance graph start end)))
+(let [heightmap (read-input "2022/day12/input.txt")
+      graph (->> (coordinates heightmap)
+                 (reduce #(assoc %1 %2 (connected heightmap %2)) {}))
+      start (first (find-pos heightmap "E"))
+      end (first (find-pos heightmap "S"))
+      distances (dijkstra graph start)]
+  (println "Part 1:" (distances end))
+  (println "Part 2:" (->> (find-pos heightmap "a")
+                          (map distances)
+                          (reduce min))))
