@@ -48,8 +48,31 @@
   (->> (map (fn [line] (str/join (map #(symbols %) line))) grid)
        (map println)))
 
-(do (println)
-    (print-grid (initial-grid "2022/day14/example.txt")))
+(defn free? [grid [x y]]
+  (not (get-in grid [y x])))
 
-(do (println)
-    (print-grid (initial-grid "2022/day14/input.txt")))
+(defn sand-pos
+  ([grid] (sand-pos grid [(translate-x grid 500) 0]))
+  ([grid [initial-x initial-y]]
+   (loop [x initial-x y initial-y]
+     (cond
+       (> y (count grid)) :overflow
+       (free? grid [x (inc y)]) (recur x (inc y))
+       (free? grid [(dec x) (inc y)]) (recur (dec x) (inc y))
+       (free? grid [(inc x) (inc y)]) (recur (inc x) (inc y))
+       :else [x y]))))
+
+(defn count-steps [initial-grid]
+  (loop [grid initial-grid
+         count 0]
+    (let [pos (sand-pos grid)]
+      (if (= pos :overflow)
+        count
+        (recur (assoc-in grid [(last pos) (first pos)] :sand)
+               (inc count))))))
+
+;; (do (println)
+;;     (print-grid (initial-grid "2022/day14/example.txt")))
+
+(println "Part 1:"
+         (count-steps (initial-grid "2022/day14/input.txt")))
