@@ -35,12 +35,11 @@
 
 (defn initial-grid [filename]
   (let [paths (read-paths filename)
-        xs (mapcat #(map first %) paths)
-        ys (mapcat #(map last %) paths)
-        min-x (reduce min xs)
-        max-x (reduce max xs)
-        width (+ 3 (* 2 (reduce max [(- max-x 500) (- 500 min-x)])))
-        height (inc (reduce max ys))
+        min-x (reduce min (mapcat #(map first %) paths))
+        max-x (reduce max (mapcat #(map first %) paths))
+        height (inc (reduce max (mapcat #(map last %) paths)))
+        paths-width (+ 3 (* 2 (reduce max [(- max-x 500) (- 500 min-x)])))
+        width (reduce max [(+ 3 (* 2 height)) paths-width])
         grid (vec (repeat height (vec (repeat width nil))))]
     (reduce draw-path grid paths)))
 
@@ -56,6 +55,7 @@
   ([grid [initial-x initial-y]]
    (loop [x initial-x y initial-y]
      (cond
+       (not (free? grid [x y])) :blocked
        (> y (count grid)) :overflow
        (free? grid [x (inc y)]) (recur x (inc y))
        (free? grid [(dec x) (inc y)]) (recur (dec x) (inc y))
@@ -66,13 +66,22 @@
   (loop [grid initial-grid
          count 0]
     (let [pos (sand-pos grid)]
-      (if (= pos :overflow)
+      (if (or (= pos :overflow)
+              (= pos :blocked))
         count
         (recur (assoc-in grid [(last pos) (first pos)] :sand)
                (inc count))))))
 
-;; (do (println)
-;;     (print-grid (initial-grid "2022/day14/example.txt")))
+(defn add-floor [grid]
+  (let [width (count (first grid))]
+    (conj grid
+          (vec (repeat width nil))
+          (vec (repeat width :rock)))))
 
-(println "Part 1:"
-         (count-steps (initial-grid "2022/day14/input.txt")))
+;; (do (println)
+;;     (print-grid (->> (initial-grid "2022/day14/example.txt")
+;;                      (add-floor))))
+
+(let [grid (initial-grid "2022/day14/input.txt")]
+  (println "Part 1:" (count-steps grid))
+  (println "Part 2:" (count-steps (add-floor grid))))
