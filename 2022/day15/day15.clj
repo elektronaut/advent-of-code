@@ -6,6 +6,10 @@
   (+ (abs (- x2 x1))
      (abs (- y2 y1))))
 
+(defn valid-position? [[x y]]
+  (and (>= x 0) (<= x 4000000)
+       (>= y 0) (<= y 4000000)))
+
 (defn parse-line [line]
   (let [[sx sy bx by] (map read-string (re-seq #"-?\d+" line))]
     {[sx sy] [bx by]}))
@@ -30,4 +34,32 @@
         sensors (into #{} (filter #(= y (last %)) (vals devices)))]
     (- (count covered) (count sensors))))
 
+(defn covered?
+  ([pos] (reduce #(or %1 %2) (map (partial covered? pos) (keys devices))))
+  ([pos sensor] (let [beacon (devices sensor)
+                      radius (manhattan-distance sensor beacon)
+                      distance (manhattan-distance sensor pos)]
+                  (<= distance radius))))
+
+(defn perimeter [sensor]
+  (let [[sensor-x sensor-y] sensor
+        radius (inc (manhattan-distance sensor (devices sensor)))]
+    (->> (for [y (range (- sensor-y radius) (inc (+ sensor-y radius)))]
+           (let [distance (abs (- y sensor-y))
+                 offset (- radius distance)]
+             (if (= 0 offset)
+               [[sensor-x y]]
+               [[(- sensor-x offset) y]
+                [(+ sensor-x offset) y]])))
+         (mapcat identity))))
+
+(defn tuning-freq [[x y]]
+  (+ (* x 4000000) y))
+
 (println "Part 1:" (count-covered 2000000))
+(println "Part 2:"
+         (->> (mapcat perimeter (keys devices))
+              (filter valid-position?)
+              (remove covered?)
+              (first)
+              (tuning-freq))
