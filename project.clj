@@ -3,4 +3,4 @@
   :url "https://github.com/elektronaut/advent-of-code"
   :license {:name "MIT"
             :url "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.11.1"]])
+  :dependencies [[org.clojure/clojure "1.12.0"]])
